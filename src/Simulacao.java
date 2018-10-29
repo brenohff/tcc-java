@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Simulacao {
 
@@ -54,6 +55,7 @@ public class Simulacao {
             Deus.calculateFitness(deuses);
             kratos = getKratos(deuses);
             atena = getAtena(deuses, kratos);
+            getRodaDaRoleta(deuses);
 
             //CrossOver
             miniDeus = Deus.fromParent(kratos);
@@ -180,6 +182,33 @@ public class Simulacao {
             }
         }
         return atena;
+    }
+
+    public static void getRodaDaRoleta(List<Deus> deuses) {
+        List<Deus> melhoresDeuses = new ArrayList<>();
+        Random random = new Random();
+        int somaFitness = 0;
+
+        for (int i = 0; i < deuses.size(); i++) {
+            somaFitness += deuses.get(i).getTotalFitness();
+        }
+
+        int valueKratos = random.nextInt(somaFitness);
+        int valueAtenas = random.nextInt(somaFitness);
+
+        int novaSomaFitness = 0;
+        for (Deus deus : deuses) {
+            novaSomaFitness += deus.getTotalFitness();
+            if (novaSomaFitness > valueKratos) {
+                melhoresDeuses.add(deus);
+            }
+            if (novaSomaFitness > valueAtenas) {
+                melhoresDeuses.add(deus);
+            }
+        }
+
+        System.out.println("Achei os melhores deuses");
+
     }
 
     public static List<Rota> getRotasRomenia(){
